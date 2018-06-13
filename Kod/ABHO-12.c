@@ -12,6 +12,7 @@ static unsigned int sw;
 
 int screen, selection, direction, score;
 int intro = 0;
+int movey_counter = 0;
 
 
 struct Entity player1,player2;
@@ -61,11 +62,22 @@ static void game() {
     player1.x += player1.speedx*direction;
   }
 
+  
+
   if (sw & 1) direction = -1;
   else direction=1;
   if (((player2.x + player2.speedx*direction)>0) && ((player2.x + player2.speedx*direction + player2.imageData.width)<32)){
     player2.x += player2.speedx*direction;
   }
+  if (movey_counter==5)
+  {
+    player1.y += player1.speedy;
+    player2.y += player2.speedy;
+    movey_counter=0;
+  } else {
+    movey_counter++;
+  }
+  
 
   addToBuffer(player1);
   addToBuffer(player2);
@@ -124,21 +136,52 @@ void hiscore_menu() {
 
 
 //Run the choose difficulty menu
-void chooseMode() {
+void mode_menu() {
 
   int z;
 
+  if ((btns & 4) && selection>0)
+    selection -= 1;
+  else if ((btns & 2) && selection<1)
+    selection += 1;
+
   if (btns & 8) {
+    if (selection==0) {
+      InitBall();
+        player1 = wall;
+        player1.x = 0;
+        player1.y = 0;
+
+      player2 = player;
+        player2.x = 0;
+        player2.y = 124;
+        player2.speedy=-1;
+        screen = 3;
+        for (z = 0; z < 700000; z++);
+    }
+    else if (selection==1){
         InitBall();
         player1 = player;
         player1.x = 0;
         player1.y = 0;
+        player1.speedy=1;
 
         player2 = player;
         player2.x = 0;
-        player2.y = 124;       
-    screen = 3;
-    for (z = 0; z < 700000; z++);
+        player2.y = 124; 
+        player2.speedy=-1;      
+        screen = 3;
+        for (z = 0; z < 700000; z++);
+    }
+  }
+  addToBufferImage(modeImage);
+  switch(selection) {
+    case 0:
+      draw_line(54);
+      break;
+    case 1:
+      draw_line(65);
+      break;
   }
 }
 
@@ -170,7 +213,7 @@ void update(void) {
       main_menu();
       break;
     case  1:
-      chooseMode();
+      mode_menu();
       break;
     case  2:
       hiscore_menu();

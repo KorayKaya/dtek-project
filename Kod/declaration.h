@@ -45,6 +45,7 @@ void display_debug( volatile int * const addr );
 extern const uint32_t const menuImage[];
 extern const uint32_t const introImage[];
 extern const uint32_t const hiscoreImage[];
+extern const uint32_t const modeImage[];
 extern const uint8_t const font[128*8];
 extern char textbuffer[4][16];
 const uint8_t const numberFont[70];
@@ -58,6 +59,7 @@ int rn(int x);
 //data.c
 extern struct Entity ball;
 extern struct Entity player;
+extern struct Entity wall;
 
 //ball.c
 void InitBall();
