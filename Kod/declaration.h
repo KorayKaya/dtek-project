@@ -11,7 +11,7 @@
 struct ImageData{
     int width;
     int height;
-    uint32_t image[4];
+    uint32_t image[8];
 };
 
 struct Entity{
@@ -42,14 +42,10 @@ void draw_go(int y);
 void display_debug( volatile int * const addr );
 
 
-extern const uint8_t const difficultyFont[512];
-extern const uint8_t const goFont[64];
-extern const uint8_t const rocketMenuFont[512];
-extern const uint8_t const gameoverFont[512];
 extern const uint32_t const menuImage[];
 extern const uint32_t const introImage[];
+extern const uint32_t const hiscoreImage[];
 extern const uint8_t const font[128*8];
-extern const uint8_t const dashBoardFont[64];
 extern char textbuffer[4][16];
 const uint8_t const numberFont[70];
 

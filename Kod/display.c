@@ -85,13 +85,6 @@ void display_init(void) {
   spi_send_recv(0xAF);
 }
 
-//Draws gameover graphics
-void draw_gameover(void) {  
-  int i;
-
-  for (i = 0; i < 512; i++)
-    buffer[i] |= gameoverFont[i];
-}
 
 //Draws a line at y postion
 void draw_line(int y) {
@@ -102,22 +95,6 @@ void draw_line(int y) {
       buffer[i * 128 + y + j] = buffer[i * 128 + y + j] ^ 0xff;
     }
   }
-}
-
-//Draws graphics for difficulty page
-void draw_difficulty(void) {
-  int i;
-
-  for (i = 0; i < 512; i++)
-    buffer[i] |= difficultyFont[i];
-}
-
-//Draws graphics for rocket menu
-void draw_rocketMenu(void) {
-  int i;
-
-  for (i = 0; i < 512; i++)
-    buffer[i] |= rocketMenuFont[i];
 }
 
 /**
@@ -154,14 +131,6 @@ void render(void) {
   }
 }
 
-
-//Draws player info on screen
-void draw_info() {
-  int i = 0;
-
-}
-
-
 /**
  * Don't really know how this one works but it clears the screen
  * of items not being used.
@@ -192,11 +161,6 @@ void display_update(void) {
 
 
 }
-
-
-
-
-
 
 //return x/y cordniates if true else 0
 char collision(struct Entity entity) {
@@ -237,16 +201,4 @@ void addToBufferImage(const uint32_t const image[] ) {
       buffer[j*128+i] |= (row & (0x000000ff<<(j*8))) >> (j*8);
     }
   }
-}
-
-
-//Draws go graphic
-void draw_go(int y) {
-  int i, j;
-  for (i = 0; i < 4; i++) {
-    for (j = 0 ; j < 16; j++) {
-      buffer[128 * i + j + y] |= goFont[j + 16 * i];
-    }
-  }
-
-}
+} 

@@ -10,7 +10,7 @@ void *stdin, *stdout, *stderr;
 static unsigned int btns;
 static unsigned int sw;
 
-int screen, selection, direction;
+int screen, selection, direction, score;
 int intro = 0;
 
 
@@ -43,14 +43,9 @@ int getsw( void ) {
   return ((PORTD & (0xF << 8)) >> 8);
 }
 
-
-
-
-
 //Initalize
 void init(void) {
   srand(13);
-  InitBall();
   display_init();
   timer_init();
   display_update();
@@ -124,8 +119,7 @@ void hiscore_menu() {
     screen = 0;
     for (z = 0; z < 700000; z++);
   }
-
-  draw_rocketMenu();
+  addToBufferImage(hiscoreImage);
 }
 
 
@@ -135,6 +129,7 @@ void chooseMode() {
   int z;
 
   if (btns & 8) {
+        InitBall();
         player1 = player;
         player1.x = 0;
         player1.y = 0;
@@ -145,8 +140,6 @@ void chooseMode() {
     screen = 3;
     for (z = 0; z < 700000; z++);
   }
-
-  draw_difficulty();
 }
 
 //Run gameover screen
@@ -156,8 +149,6 @@ void gameover() {
     screen = 0;
     for (z = 0; z < 700000; z++);
   }
-
-  draw_gameover();
 }
 
 void update(void) {

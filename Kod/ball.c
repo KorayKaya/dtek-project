@@ -19,19 +19,20 @@ void renderBall() {
 //moves ball
 char moveBall() {
   // if the firstball moves out of the screen in x, bounce back
-  firstball.x += firstball.speedx;
-  if (((firstball.x + firstball.imageData.width) > 32) || firstball.x < 0) {
-    firstball.speedx *= -1;
-    firstball.x += firstball.speedx*2;
-  }
-
-  // if the firstball moves out of the screen in x, bounce back
   firstball.y += firstball.speedy;
   if (collision(firstball)){
     firstball.speedx = rand() % 5;
     firstball.speedy *= -1;
     firstball.y += firstball.speedy*2;
   }
+
+  // if the firstball moves out of the screen in x, bounce back
+  firstball.x += firstball.speedx;
+  if (((firstball.x + firstball.imageData.width) > 32) || firstball.x < 0 || collision(firstball)) {
+    firstball.speedx *= -1;
+    firstball.x += firstball.speedx*2;
+  }
+
   if (firstball.y > 128 || (firstball.y + firstball.imageData.height) < 0)
   {
     return 1;
