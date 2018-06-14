@@ -55,6 +55,9 @@ void chooseMode();
 void update();
 void init();
 int rn(int x);
+struct Entity getPlayer1(void);
+struct Entity getPlayer2(void);
+
 
 //data.c
 extern struct Entity ball;

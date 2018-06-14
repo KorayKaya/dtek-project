@@ -162,6 +162,32 @@ void display_update(void) {
 
 }
 
+void draw_scorce(){
+int i,firstNumber,secondNumber;
+
+firstNumber = score % 10;
+for(i = 3; i<10;i++){
+buffer[2*128 + i] |= numberFont[firstNumber+(i-3)*10];
+}
+
+
+if(score>9){
+secondNumber= (score-firstNumber)/10;
+for(i = 3; i<10;i++){
+buffer[3*128 + i] |= numberFont[secondNumber+(i-3)*10] >> 2;
+}
+
+}
+
+else{
+  for(i = 3; i<10;i++){
+  buffer[3*128 + i] |= numberFont[(i-3)*10] >> 2;
+  }
+}
+
+
+}
+
 //return x/y cordniates if true else 0
 char collision(struct Entity entity) {
   int i,j;

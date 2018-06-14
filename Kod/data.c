@@ -9,9 +9,9 @@ char textbuffer[4][16];
 
 
 //image of ball
-struct Entity ball = {14,62,0,0,{2,2,{0x00000008,0x00000008}}};
+struct Entity ball = {14,62,0,0,{2,2,{0x00000003,0x00000003}}};
 
-struct Entity player = {0,0,2,0,{16,4,{0x0000ffff,0x0000ffff,0x0000ffff,0x0000ffff}}};
+struct Entity player = {0,0,2,0,{10,4,{0x000003ff,0x000003ff,0x000003ff,0x000003ff}}};
 
 struct Entity wall = {0,0,0,0,{32,4,{0xffffffff,0xffffffff,0xffffffff,0xffffffff}}};
 

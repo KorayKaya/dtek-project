@@ -10,14 +10,17 @@ void *stdin, *stdout, *stderr;
 static unsigned int btns;
 static unsigned int sw;
 
-int screen, selection, direction, score;
+int screen, selection, xdirection, score;
 int intro = 0;
+int ydirection = 1;
 int movey_counter = 0;
 
 
 struct Entity player1,player2;
 
 
+struct Entity  getPlayer1(void) {return player1;}
+struct Entity  getPlayer2(void) {return player2;}
 
 //Get button values.
 unsigned int getbtns(void) {return PORTD >> 4 & 14 | PORTF >> 1 & 1;}
@@ -56,23 +59,31 @@ void init(void) {
 //Run the game
 static void game() {
 
-  if (sw & 8) direction = -1;
-  else direction=1;
-  if (((player1.x + player1.speedx*direction)>0) && ((player1.x + player1.speedx*direction + player1.imageData.width)<32)){
-    player1.x += player1.speedx*direction;
+  if (sw & 8) xdirection = -1;
+  else xdirection=1;
+  if (((player1.x + player1.speedx*xdirection)>0) && ((player1.x + player1.speedx*xdirection + player1.imageData.width)<32)){
+    player1.x += player1.speedx*xdirection;
   }
 
   
 
-  if (sw & 1) direction = -1;
-  else direction=1;
-  if (((player2.x + player2.speedx*direction)>0) && ((player2.x + player2.speedx*direction + player2.imageData.width)<32)){
-    player2.x += player2.speedx*direction;
+  if (sw & 1) xdirection = -1;
+  else xdirection=1;
+  if (((player2.x + player2.speedx*xdirection)>0) && ((player2.x + player2.speedx*xdirection + player2.imageData.width)<32)){
+    player2.x += player2.speedx*xdirection;
   }
-  if (movey_counter==5)
+
+  if (player2.y <88)
   {
-    player1.y += player1.speedy;
-    player2.y += player2.speedy;
+    ydirection =-1;
+  } else if (player2.y>123){
+    ydirection = 1;
+  }
+
+  if (movey_counter==5 )
+  {
+    player1.y += player1.speedy*ydirection;
+    player2.y += player2.speedy*ydirection;
     movey_counter=0;
   } else {
     movey_counter++;
@@ -86,7 +97,6 @@ static void game() {
   renderBall();
 
 }
-
 
 //Run the main menu
 void main_menu() {
