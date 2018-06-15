@@ -5,6 +5,11 @@
 #include <stdbool.h>        /* To be able to use boolean */
 
 
+/*
+The core of the game, handles different screens and the game logic
+
+*/
+
 void *stdin, *stdout, *stderr;
 
 static unsigned int btns;
@@ -60,18 +65,21 @@ void init(void) {
 //Run the game
 static void game() {
 
+  //sw 4 controlls player 1
   if (sw & 8) xdirection = -1;
   else xdirection = 1;
   if (((player1.x + player1.speedx * xdirection) > 0) && ((player1.x + player1.speedx * xdirection + player1.imageData.width) < 32)) {
     player1.x += player1.speedx * xdirection;
   }
 
+  //sw 1 controlls player 2
   if (sw & 1) xdirection = -1;
   else xdirection = 1;
   if (((player2.x + player2.speedx * xdirection) > 0) && ((player2.x + player2.speedx * xdirection + player2.imageData.width) < 32)) {
     player2.x += player2.speedx * xdirection;
   }
 
+  //players cant go off screen
   if (player2.y < 88)
   {
     ydirection = -1;
@@ -79,6 +87,7 @@ static void game() {
     ydirection = 1;
   }
 
+  //difficulty increase with score
   if (score < 50)
   {
     y_speed = 5 - ((int) score / 10);
@@ -86,7 +95,7 @@ static void game() {
     y_speed = 0;
   }
 
-
+  //only move once every "y_speed" updates
   if (movey_counter >= y_speed )
   {
     player1.y += player1.speedy * ydirection;
@@ -96,10 +105,11 @@ static void game() {
     movey_counter++;
   }
 
-
+  //add entity to buffer
   addToBuffer(player1);
   addToBuffer(player2);
 
+  //if moveball returns 1 which means it left the screen, we see gameover
   if (moveBall()){screen = 4;}
   score = getCollisions();
   draw_number(score, 16, 60);
@@ -112,11 +122,13 @@ static void game() {
 void main_menu() {
   int z;
 
+  //btn 2 and 3 changes selection
   if ((btns & 4))
     selection = 0;
   else if ((btns & 2))
     selection = 1;
 
+  //btn 4 confirms selection, we pick screen depending on selection
   if (btns & 8) {
     switch (selection) {
     case 0:
@@ -129,6 +141,7 @@ void main_menu() {
       break;
     }
   }
+  //we add the background to buffer
   addToBufferImage(menuImage);
   switch (selection) {
   case 0:
@@ -166,6 +179,7 @@ void mode_menu() {
     selection += 1;
 
   if (btns & 8) {
+    //single player selection
     if (selection == 0) {
       InitBall();
       animationtest=0;
@@ -182,6 +196,7 @@ void mode_menu() {
       selection = 0;
       for (z = 0; z < 700000; z++);
     }
+    //multiplayer selection
     else if (selection == 1) {
       InitBall();
       player1 = player;
@@ -200,6 +215,8 @@ void mode_menu() {
     }
   }
   addToBufferImage(modeImage);
+  
+  //draw line for each selection
   switch (selection) {
   case 0:
     draw_line(54);
@@ -210,7 +227,6 @@ void mode_menu() {
   }
 }
 
-//Run gameover screen
 void gameover() {
   int z,i;
   if (btns & 8) {
@@ -219,6 +235,7 @@ void gameover() {
     selection = 0;
     for (z = 0; z < 700000; z++);
   }
+  //show score in a vertical line
   for (i = 0; i < 15; ++i)
   {
     draw_number(score, 16, (-2+(i*12))); 
@@ -230,14 +247,18 @@ void update(void) {
   btns = getbtns();
 
   sw =  getsw();
+  
+  //we make sure that each loop is correctly timed
   if (IFS(0) & 0x100) {
     IFS(0) = 0; // Reset timer flag
 
+    //short intro image
     if (intro < 20)
     {
       addToBufferImage(introImage);
       intro++;
     }
+    //do different tasks depending on which screen we are on
     else {
       switch (screen) {
       case  0:

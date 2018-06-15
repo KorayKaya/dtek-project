@@ -161,10 +161,7 @@ void display_update(void) {
 
 
 }
-/*
-void impactAnimation(int x, int y, int frame){
-  addToBufferSquareSmall(impact.frames[frame].image,x,y,impact.frames[frame].width,impact.frames[frame].height);
-}*/
+
 
 //function that does all the graphics! beautiful
 void addToBufferSquare(uint32_t image[], int x, int y, int width, int height){
@@ -182,6 +179,7 @@ void addToBufferSquare(uint32_t image[], int x, int y, int width, int height){
     }
   }
 }
+
 
 void draw_number(int number, int x, int y) {
   int i, j, firstNumber, secondNumber;

@@ -8,33 +8,21 @@
 
 
 
-struct ImageData{
+struct Graphic{
     int width;
     int height;
     uint32_t image[20];
 };
 
-/*
-struct smallImage{
-	int width;
-	int height;
-	uint16_t image[20];
-};*/
 
 struct Entity{
     int x;
     int y;
     int speedx;
     int speedy;
-    struct ImageData imageData;
+    struct Graphic imageData;
 };
 
-/*
-struct Animation{
-    int x;
-    int y;
-    struct smallImage frames[7];
-};*/
 
 
 //display.c
@@ -60,10 +48,8 @@ extern const uint32_t const modeImage[];
 extern const uint8_t const font[128*8];
 extern const uint32_t const numbers[10][8];
 extern char textbuffer[4][16];
-const uint8_t const numberFont[70];
 
-//ABHO-12 functions and variables
-void chooseMode();
+//Pong functions
 void update();
 void init();
 int rn(int x);
@@ -75,7 +61,6 @@ struct Entity getPlayer2(void);
 extern struct Entity ball;
 extern struct Entity player;
 extern struct Entity wall;
-extern struct Animation impact;
 
 //ball.c
 void InitBall();

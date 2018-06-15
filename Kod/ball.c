@@ -5,9 +5,8 @@
 
 struct Entity firstball;
 int collisions;
-//int animations[3];
 
-//Changes all valid bits to 0
+//initialize ball with random speed, set "score" 0
 void InitBall() {
   firstball = ball;
   firstball.speedx = (rand() % 5) - 2;
@@ -24,11 +23,12 @@ void renderBall() {
   addToBuffer(firstball);
 }
 
+
 int getCollisions(void) {
   return collisions;
 }
 
-char ballCollision(struct Entity ball) {
+char ballCollision() {
   struct Entity player1 = getPlayer1();
   struct Entity player2 = getPlayer2();
 
@@ -45,30 +45,23 @@ char ballCollision(struct Entity ball) {
 
 //moves ball
 char moveBall() {
-  int i;/*
-  if (animations[3] < 7)
-  {
-    impactAnimation(animations[1], animations[2], animations[3]);
-    animations[3]++;
-  }*/
+  int i;
   
   // if the firstball moves out of the screen in y, bounce back
   firstball.y += firstball.speedy;
-  if (ballCollision(firstball)) {
+  if (ballCollision()) {
     firstball.speedx = rand() % 5;
     firstball.speedy *= -1;
     firstball.y += firstball.speedy * 2;
     collisions++;
 
-    /*
-    animations[1] = firstball.x + 1 - 9;
-    animations[2] = firstball.y + 2 - 20;
-    animations[3] = 0;*/
+
+    
   }
 
   // if the firstball moves out of the screen in x, bounce back
   firstball.x += firstball.speedx;
-  if (((firstball.x + firstball.imageData.width) > 31) || firstball.x < 1 || ballCollision(firstball)) {
+  if (((firstball.x + firstball.imageData.width) > 31) || firstball.x < 1 || ballCollision()) {
     firstball.speedx *= -1;
     firstball.x += firstball.speedx * 2;
   }

@@ -46,10 +46,10 @@ SYSKEY = 0x0;  /* Lock OSCCON */
     /* SPI2CON bit ON = 1; */
     SPI2CONSET = 0x8000;
 
-    init(); // Do any lab-specific initialization
+    init(); // Initialize the game
     
     while(1)
-        update(); // Update the screen
+        update(); // the main loop
 
     return 0;
 }
