@@ -88,7 +88,7 @@ void display_init(void) {
 
 //Draws a line at y postion
 void draw_line(int y) {
-  int i,j;
+  int i, j;
   for (i = 0; i < 4; i++) {
     for (j = 0; j < 3; j++)
     {
@@ -161,70 +161,48 @@ void display_update(void) {
 
 
 }
+/*
+void impactAnimation(int x, int y, int frame){
+  addToBufferSquareSmall(impact.frames[frame].image,x,y,impact.frames[frame].width,impact.frames[frame].height);
+}*/
 
-void draw_scorce(){
-int i,firstNumber,secondNumber;
-
-firstNumber = score % 10;
-for(i = 3; i<10;i++){
-buffer[2*128 + i] |= numberFont[firstNumber+(i-3)*10];
-}
-
-
-if(score>9){
-secondNumber= (score-firstNumber)/10;
-for(i = 3; i<10;i++){
-buffer[3*128 + i] |= numberFont[secondNumber+(i-3)*10] >> 2;
-}
-
-}
-
-else{
-  for(i = 3; i<10;i++){
-  buffer[3*128 + i] |= numberFont[(i-3)*10] >> 2;
-  }
-}
-
-
-}
-
-//return x/y cordniates if true else 0
-char collision(struct Entity entity) {
-  int i,j;
-  for (i = 0; i < entity.imageData.height; i++)
+//function that does all the graphics! beautiful
+void addToBufferSquare(uint32_t image[], int x, int y, int width, int height){
+  int i, j;
+  for (i = 0; i < height; i++)
   {
-    uint32_t row = entity.imageData.image[i] << entity.x;
+    uint32_t row = image[i] << x;
+    if ((y+i)<1 || (y+i)>128)
+    {
+      continue;
+    }
     for (j = 0; j < 4; j++)
     {
-      if (buffer[j*128+entity.y+i] & ((row & (0x000000ff<<(j*8))) >> (j*8))){
-        return 1;
-      }
+      buffer[j * 128 + y + i] ^= (row & (0x000000ff << (j * 8))) >> (j * 8);
     }
   }
-  return 0;
 }
 
+void draw_number(int number, int x, int y) {
+  int i, j, firstNumber, secondNumber;
+
+  firstNumber = number % 10;
+  if (number > 9) {
+    secondNumber = firstNumber;
+    firstNumber = (number - secondNumber) / 10;
+  }
+  addToBufferSquare(numbers[firstNumber],x,y,8,8);
+
+  if (number > 9) {
+    addToBufferSquare(numbers[secondNumber],(x-9),y,8,8);
+  }
+
+}
 
 void addToBuffer(struct Entity entity) {
-  int i,j;
-  for (i = 0; i < entity.imageData.height; i++)
-  {
-    uint32_t row = entity.imageData.image[i] << entity.x;
-    for (j = 0; j < 4; j++)
-    {
-      buffer[j*128+entity.y+i] |= (row & (0x000000ff<<(j*8))) >> (j*8);
-    }
-  }
+  addToBufferSquare(entity.imageData.image,entity.x,entity.y,entity.imageData.width,entity.imageData.height);
 }
 
-void addToBufferImage(const uint32_t const image[] ) {
-  int i,j;
-  for (i = 0; i < 128; i++)
-  {
-    uint32_t row = image[i];
-    for (j = 0; j < 4; j++)
-    {
-      buffer[j*128+i] |= (row & (0x000000ff<<(j*8))) >> (j*8);
-    }
-  }
-} 
+void addToBufferImage(const uint32_t image[] ) {
+  addToBufferSquare(image, 0,0,32,128);
+}
